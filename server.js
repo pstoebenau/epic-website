@@ -14,3 +14,9 @@ app.get("/", function(req, res) {
 app.listen(port, function() {
   console.log("app running");
 })
+
+var io = require('socket.io')(serv, {});
+io.socket.on('connection', function(socket){
+  console.log('socket connection');
+
+});
