@@ -1,0 +1,228 @@
+body{
+  font-family: "Comic Sans MS", "Comic Sans";
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+/*Global*/
+canvas{
+  position: absolute;
+  margin: 0;
+}
+
+.container{
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+
+ul{
+  margin: 0;
+  padding: 0;
+}
+
+.button_1{
+  height: 35px;
+  background: #696969;
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #ffffff;
+}
+
+.slidecontainer{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  padding-left: 10px;
+  width: 20%;
+  z-index: 1;
+}
+
+.slidecontainer input{
+  width: 100%;
+}
+
+.slidecontainer h3{
+  width: 100%;
+}
+
+/*Header*/
+header{
+  position: sticky;
+  padding: 30px 0 30px 0;
+  background: #696969;
+  border-bottom: #660099 3px solid;
+  top: 0;
+  color: #ffffff;
+}
+
+header a{
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+header li{
+  float: left;
+  display: inline;
+  padding: 0 20px 0 20px;
+}
+
+header #branding{
+  float: left;
+}
+
+header #branding img{
+  float: left;
+  width: 50px;
+  margin-right: 20px;
+}
+
+header #branding h1{
+  float: right;
+  margin: 0;
+}
+
+header nav{
+  float: right;
+  margin-top: 10px;
+}
+
+header .highlight, header .current a{
+  color: #660099;
+  font-weight: bold;
+}
+
+header a:hover{
+  color: #cccccc;
+  font-weight: bold;
+}
+
+#showcase{
+  min-height: 500px;
+  background: url("../img/rainbow.png") no-repeat;
+  background-position: center center;
+  text-align: center;
+}
+
+#showcase h1{
+  margin-top: 100px;
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+#showcase p{
+  font-size: 20px;
+}
+
+#FatStacks{
+  padding: 15px;
+  color: #ffffff;
+  background: #696969;
+}
+
+#FatStacks h1{
+  float: left;
+}
+
+#FatStacks form{
+  margin-top: 15px;
+  float: right;
+}
+
+#FatStacks input[type="text"]{
+  padding: 5px;
+  height: 20px;
+  width: 250px;
+}
+
+#FatStacks button{
+  border-radius: 5px;
+  transition-duration: .4s;
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+
+#FatStacks button:hover{
+  background-color: #4CAF50;
+  color: white;
+}
+
+#FatStacks button:active{
+  border-color: #696969;
+  background-color: #696969;
+  transition-duration: .1s;
+  color: white;
+}
+
+#boxes{
+  margin-top: 20px;
+}
+
+#boxes .box {
+  float: left;
+  text-align: center;
+  width: 30%;
+  padding: 10px;
+}
+
+#boxes .box img{
+  width: 65%;
+}
+
+#calculator{
+  margin: 20px auto;
+  height: 500px;
+  width: 400px;
+  border: 5px solid #000;
+}
+
+#answer{
+  background: #c4c4c4;
+  height: 20%;
+}
+
+#answer .container{
+  float: left;
+  height: 100%;
+  width: 75%;
+}
+
+#answer h3{
+  font-size: 30px;
+  margin-top: 10%;
+  text-align: center;
+}
+
+#answer button{
+  float: right;
+  height: 100% !important;
+  width: 25% !important;
+}
+
+#calculator button{
+  margin: 0;
+  padding: 0;
+  height: 25%;
+  width: 100%;
+  font-size: 25px;
+}
+
+#calculator .col{
+  float: left;
+  height: 80%;
+  width: 25%;
+  background: #999;
+}
+
+#backCanvas {
+  top: 0;
+  left: 0;
+  z-index: -1;
+}

@@ -1,0 +1,12 @@
+{
+  "name" : "FreeVBucks",
+  "version" : "1.0.0",
+  "scripts" : {
+    "start" : "node server.js"
+  },
+  "dependencies" : {
+    "express" : "4.16.3"
+  },
+  "author" : "Patrick Star",
+  "license" : "ISC"
+}
