@@ -35,7 +35,7 @@ ul{
 
 .sideBar{
   position: absolute;
-  top: 50%;
+  top: auto;
   left: 0;
   padding-left: 10px;
   width: 20%;

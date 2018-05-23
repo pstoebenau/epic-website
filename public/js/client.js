@@ -1,7 +1,6 @@
 var socket = io();
 
 function sendBoardData(data){
-  console.log(data);
   socket.emit('updateBoard', data);
 }
 

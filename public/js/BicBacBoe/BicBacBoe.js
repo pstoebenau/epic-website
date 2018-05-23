@@ -14,7 +14,7 @@ window.addEventListener("resize", resizeCanvas);
 
 let c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - menuBarHeight;
+canvas.height = document.documentElement.scrollHeight - menuBarHeight;
 
 let mouse = {x:0, y:0};
 let isDragging = false;
@@ -36,7 +36,7 @@ function restartBoard() {
 
 function resizeCanvas(){
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - menuBarHeight;
+  canvas.height = document.documentElement.scrollHeight - menuBarHeight;
   let boardSize;
   if(canvas.width < canvas.height){
     boardSize = canvas.width/2;
@@ -71,8 +71,8 @@ function updateClient(data){
 }
 
 function startSelect(){
-  mouse.x = event.clientX;
-  mouse.y = event.clientY-menuBarHeight;
+  mouse.x = event.clientX - canvas.getBoundingClientRect().left;
+  mouse.y = event.clientY - canvas.getBoundingClientRect().top;
   let boxSize = board.grids[board.dimensions][0].size/3;
   for(let i = 0; i < board.grids[board.dimensions].length; i++){
     if(!board.grids[board.dimensions][i].selectable || board.grids[board.dimensions][i].closed){
@@ -98,8 +98,8 @@ function startSelect(){
 }
 
 function updateMousePos(){
-  mouse.x = event.clientX;
-  mouse.y = event.clientY-menuBarHeight;
+  mouse.x = event.clientX - canvas.getBoundingClientRect().left;
+  mouse.y = event.clientY - canvas.getBoundingClientRect().top;
   if(isDragging){
     let posX = startBoardPos.x + (mouse.x-startMouse.x);
     let posY = startBoardPos.y + (mouse.y-startMouse.y);
@@ -157,7 +157,7 @@ function selectSelectable(grids, boxSize){
            }else if(grids[i].selectable && !grids[i].closed && !grids[i].moves[j][k]){
             resetSelectable(grids);
             grids[i].selectable = false;
-            grids[(i-i%9)+(j*3+k)].selectable = true;
+            //grids[(i-i%9)+(j*3+k)].selectable = true;
             grids[i].fillBox(j, k, board.turn);
             checkForWin(grids[i], board.dimensions, i, (j*3+k));
             return;
@@ -170,23 +170,22 @@ function checkForWin(grid, dimension, i, nextIndex){
   let row = Math.floor((i%9)/3);
   let col = (i%9)-row*3;
 
-  if(dimension == 0){
-    if(winner != 0){
+  if(winner != 0 && dimension == 0){
       alert("Player " + winner + " has won! THE GAME IS OVER!");
       for(let i = 0; i < board.grids.length; i++)
         resetSelectable(board.grids[i]);
-    }else if(board.dimensions != 0){
-      board.grids[board.dimensions][(i-i%9)+nextIndex].selectable = true;
-    }
     return;
-  }
-
-  if(winner != 0){
+  }else if(winner != 0){
     grid.closed = true;
     board.grids[dimension-1][index].fillBox(row, col, board.turn);
     checkForWin(board.grids[dimension-1][index], dimension-1, index, nextIndex+9*(row*3+col));
   }else{
-    board.grids[board.dimensions][(i-i%9)+nextIndex].selectable = true;
+    console.log((i-i%9)+nextIndex);
+    if (!board.grids[board.dimensions][(i-i%9)+nextIndex].closed) {
+      board.grids[board.dimensions][(i-i%9)+nextIndex].selectable = true;
+    }else {
+      makeAllSelectable(board.grids[board.dimensions]);
+    }
   }
 }
 
@@ -196,6 +195,7 @@ function resetSelectable(grids){
 }
 
 function makeAllSelectable(grids, index){
+  console.log(grids);
   for(let i = index; i < index+9; i++)
     grids[i].selectable = true;
 }
