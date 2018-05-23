@@ -33,7 +33,7 @@ ul{
   color: #ffffff;
 }
 
-.slidecontainer{
+.sideBar{
   position: absolute;
   top: 50%;
   left: 0;
@@ -42,12 +42,22 @@ ul{
   z-index: 1;
 }
 
-.slidecontainer input{
+.sideBar input{
   width: 100%;
 }
 
-.slidecontainer h3{
+.sideBar #opponentID{
+  width: 40px;
+}
+
+.sideBar h3{
   width: 100%;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /*Header*/

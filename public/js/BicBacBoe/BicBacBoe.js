@@ -2,11 +2,13 @@ let menuBar = document.getElementById("menuBar");
 let menuBarHeight = menuBar.clientHeight + 3;
 let dimensionSlider = document.getElementById("dimensionRange");
 let zoomSlider = document.getElementById("zoomRange");
+let opponentID = document.getElementById("opponentID");
 let canvas = document.querySelector('canvas');
 canvas.addEventListener("mousemove", updateMousePos);
 canvas.addEventListener("mouseup", stopSelect);
 dimensionSlider.addEventListener("input", restartBoard);
 zoomSlider.addEventListener("input", zoom);
+opponentID.addEventListener("input", function(){ pickOpponent(opponentID.value); });
 canvas.addEventListener("mousedown", startSelect);
 window.addEventListener("resize", resizeCanvas);
 
@@ -52,6 +54,20 @@ function zoom(){
 function position(x, y){
   this.x = x;
   this.y = y;
+}
+
+function updateClient(data){
+  console.log(data);
+  let n = 0;
+  for (let i = 0; i < board.grids.length; i++) {
+    for (let j = 0; j < board.grids[i].length; j++) {
+      board.grids[i][j].moves = data.moves[n];
+      board.grids[i][j].selectable = data.selectable[n];
+      board.grids[i][j].closed = data.closed[n];
+      n++;
+    }
+  }
+  board.turn = data.turn;
 }
 
 function startSelect(){
@@ -107,13 +123,24 @@ function stopSelect(){
            && grids[0].playPoints[j][k].y < mouse.y+boxSize/2){
            if(grids[0].selectable && !grids[0].moves[j][k]){
              grids[0].fillBox(j, k, board.turn);
-             board.turn = 1-board.turn;
              checkForWin(grids[0], 0);
            }
         }
   }else{
     selectSelectable(grids, boxSize);
   }
+
+  board.turn = 1-board.turn;
+
+  let pack = {moveData: [], selectable: [], closed: [], turn:board.turn};
+  for (let i = 0; i < board.grids.length; i++) {
+    for (let j = 0; j < board.grids[i].length; j++) {
+      pack.moveData.push(board.grids[i][j].moves);
+      pack.selectable.push(board.grids[i][j].selectable);
+      pack.closed.push(board.grids[i][j].closed);
+    }
+  }
+  sendBoardData(pack);
 }
 
 function selectSelectable(grids, boxSize){
@@ -126,7 +153,6 @@ function selectSelectable(grids, boxSize){
              makeAllSelectable(grids, i-i%9);
              grids[i].fillBox(j, k, board.turn);
              checkForWin(grids[i], board.dimensions, i,(j*3+k));
-             board.turn = 1-board.turn
              return;
            }else if(grids[i].selectable && !grids[i].closed && !grids[i].moves[j][k]){
             resetSelectable(grids);
@@ -134,7 +160,6 @@ function selectSelectable(grids, boxSize){
             grids[(i-i%9)+(j*3+k)].selectable = true;
             grids[i].fillBox(j, k, board.turn);
             checkForWin(grids[i], board.dimensions, i, (j*3+k));
-            board.turn = 1-board.turn
             return;
           }
 }

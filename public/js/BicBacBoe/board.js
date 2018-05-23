@@ -92,10 +92,7 @@ function grid(x, y, size){
   this.playPoints[0] = [];
   this.playPoints[1] = [];
   this.playPoints[2] = [];
-  this.moves = [];
-  this.moves[0] = [];
-  this.moves[1] = [];
-  this.moves[2] = [];
+  this.moves = [[],[],[]];
 
   this.updatePlayPoints = function(){
     this.playPoints[0][0] = new position(this.position.x-this.size/3, this.position.y-this.size/3);
