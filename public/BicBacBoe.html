@@ -28,6 +28,7 @@
 
     <div id="BicBacBoe">
       <canvas></canvas>
+    </div>
       <div class="sideBar">
         <h3 id="clientID">Client ID: null</h3>
         <h3>Pick an opponent ID</h3>
@@ -36,18 +37,29 @@
         <input type="range" min="0" max="4" value="0" id="dimensionRange">
         <h3>Zoom</h3>
         <input type="range" min="10" max="100" value="1" id="zoomRange">
-        <button type="button" name="Fullscreen" onclick="goFullscreen">Fullscreen</button>
+        <button type="button" name="Fullscreen" onclick="goFullscreen" id = "fullScrnBttn">Fullscreen</button>
       </div>
-    </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script src="./js/client.js"></script>
     <script src="./js/BicBacBoe/board.js"></script>
     <script src="./js/BicBacBoe/BicBacBoe.js"></script>
     <script type="text/javascript">
-      function goFullscreen(){
-        document.getElementById("BicBacBoe").requestFullscreen();
-      }
+      var BicBacBoe = document.getElementById("BicBacBoe");
+      var fullscrnBttn = document.getElementById("fullScrnBttn")
+
+      fullScrnBttn.addEventListener('click', function(){
+        if(canvas.requestFullscreen){
+          canvas.requestFullscreen();
+        }else if(canvas.webkitRequestFullscreen){
+          canvas.webkitRequestFullscreen();
+        }else if (canvas.mozRequestFullscreen) {
+          canvas.mozRequestFullscreen();
+        }else if (canvas.msRequestFullscreen) {
+          canvas.msRequestFullscreen();
+        }
+      });
     </script>
   </body>
 </html>

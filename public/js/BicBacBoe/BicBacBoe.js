@@ -4,13 +4,29 @@ let dimensionSlider = document.getElementById("dimensionRange");
 let zoomSlider = document.getElementById("zoomRange");
 let opponentID = document.getElementById("opponentID");
 let canvas = document.querySelector('canvas');
+canvas.addEventListener("mousedown", startSelect);
 canvas.addEventListener("mousemove", updateMousePos);
 canvas.addEventListener("mouseup", stopSelect);
 dimensionSlider.addEventListener("input", restartBoard);
 zoomSlider.addEventListener("input", zoom);
 opponentID.addEventListener("input", function(){ pickOpponent(opponentID.value); });
-canvas.addEventListener("mousedown", startSelect);
 window.addEventListener("resize", resizeCanvas);
+// Prevent scrolling when touching the canvas
+document.body.addEventListener("touchstart", function (e) {
+  if (e.target == canvas) {
+    e.preventDefault();
+  }
+  var touch = e.touches[0];
+  startSelect(touch.clientX, touch.clientY);
+}, false);
+document.body.addEventListener("touchmove", function (e) {
+  if (e.target == canvas) {
+    e.preventDefault();
+  }
+  var touch = e.touches[0];
+  updateMousePos(touch.clientX, touch.clientY);
+}, false);
+document.body.addEventListener("touchend", stopSelect, false);
 
 let c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -36,6 +52,7 @@ function restartBoard() {
 
 function resizeCanvas(){
   canvas.width = window.innerWidth;
+  canvas.height = 0;
   canvas.height = document.documentElement.scrollHeight - menuBarHeight;
   let boardSize;
   if(canvas.width < canvas.height){
@@ -70,9 +87,14 @@ function updateClient(data){
   board.turn = data.turn;
 }
 
-function startSelect(){
-  mouse.x = event.clientX - canvas.getBoundingClientRect().left;
-  mouse.y = event.clientY - canvas.getBoundingClientRect().top;
+function startSelect(mouseX, mouseY){
+  if(mouseX && mouseY){
+    mouse.x = mouseX;
+    mouse.y = mouseY;
+  }else{
+    mouse.x = event.clientX - canvas.getBoundingClientRect().left;
+    mouse.y = event.clientY - canvas.getBoundingClientRect().top;
+  }
   let boxSize = board.grids[board.dimensions][0].size/3;
   for(let i = 0; i < board.grids[board.dimensions].length; i++){
     if(!board.grids[board.dimensions][i].selectable || board.grids[board.dimensions][i].closed){
@@ -97,9 +119,14 @@ function startSelect(){
   isDragging = true;
 }
 
-function updateMousePos(){
-  mouse.x = event.clientX - canvas.getBoundingClientRect().left;
-  mouse.y = event.clientY - canvas.getBoundingClientRect().top;
+function updateMousePos(mouseX, mouseY){
+  if(mouseX && mouseY){
+    mouse.x = mouseX;
+    mouse.y = mouseY;
+  }else{
+    mouse.x = event.clientX - canvas.getBoundingClientRect().left;
+    mouse.y = event.clientY - canvas.getBoundingClientRect().top;
+  }
   if(isDragging){
     let posX = startBoardPos.x + (mouse.x-startMouse.x);
     let posY = startBoardPos.y + (mouse.y-startMouse.y);
@@ -170,22 +197,27 @@ function checkForWin(grid, dimension, i, nextIndex){
   let row = Math.floor((i%9)/3);
   let col = (i%9)-row*3;
 
-  if(winner != 0 && dimension == 0){
+  if(dimension == 0){
+    if(winner != 0){
       alert("Player " + winner + " has won! THE GAME IS OVER!");
       for(let i = 0; i < board.grids.length; i++)
         resetSelectable(board.grids[i]);
+    }else if(board.dimensions != 0){
+      board.grids[board.dimensions][(i-i%9)+nextIndex].selectable = true;
+    }
     return;
-  }else if(winner != 0){
+  }
+
+  if(winner != 0){
     grid.closed = true;
     board.grids[dimension-1][index].fillBox(row, col, board.turn);
-    checkForWin(board.grids[dimension-1][index], dimension-1, index, nextIndex+9*(row*3+col));
+    checkForWin(board.grids[dimension-1][index], dimension-1, index, nextIndex);
   }else{
-    console.log((i-i%9)+nextIndex);
-    if (!board.grids[board.dimensions][(i-i%9)+nextIndex].closed) {
-      board.grids[board.dimensions][(i-i%9)+nextIndex].selectable = true;
-    }else {
-      makeAllSelectable(board.grids[board.dimensions]);
-    }
+    nextIndex += (i-i%9);
+    if(!board.grids[board.dimensions][nextIndex].closed)
+      board.grids[board.dimensions][nextIndex].selectable = true;
+    else
+      makeAllSelectable(board.grids[board.dimensions], nextIndex - nextIndex%9);
   }
 }
 
@@ -195,7 +227,6 @@ function resetSelectable(grids){
 }
 
 function makeAllSelectable(grids, index){
-  console.log(grids);
   for(let i = index; i < index+9; i++)
     grids[i].selectable = true;
 }
