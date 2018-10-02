@@ -11,8 +11,8 @@
       <div id="background"></div>
       <div class="container">
         <div id="branding">
-          <img src="./img/communism.png">
-          <h1><span class="highlight">Fast Cash</span></h1>
+          <img src="./img/button.png">
+          <h1><span class="highlight">Website</span></h1>
         </div>
         <nav>
           <ul>
@@ -50,12 +50,10 @@
       var fullscrnBttn = document.getElementById("fullScrnBttn")
 
       fullScrnBttn.addEventListener('click', function(){
-        if(canvas.requestFullscreen){
-          canvas.requestFullscreen();
-        }else if(canvas.webkitRequestFullscreen){
+        if(canvas.webkitRequestFullscreen){
           canvas.webkitRequestFullscreen();
         }else if (canvas.mozRequestFullscreen) {
-          canvas.mozRequestFullScreen();
+          canvas.mozRequestFullscreen();
         }else if (canvas.msRequestFullscreen) {
           canvas.msRequestFullscreen();
         }

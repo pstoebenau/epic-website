@@ -1,3 +1,15 @@
+function position(x, y){
+  this.x = x;
+  this.y = y;
+
+  this.inside = (p1, p2) => {
+    if(this.x >= p1.x && this.x <= p2.x && this.y >= p1.y && this.y <= p2.y)
+      return true;
+
+    return false;
+  }
+}
+
 function ticTacToeBoard(x, y, dimensions){
   this.position = new position(0,0);
   this.position.x = x;
@@ -53,7 +65,8 @@ function ticTacToeBoard(x, y, dimensions){
   this.draw = function(){
     for (let i = 0; i < this.grids.length; i++) {
       for (let j = 0; j < this.grids[i].length; j++) {
-        this.grids[i][j].draw();
+        if(this.grids[i][j].position.inside(new position(0,0), new position(canvas.width,canvas.height)))
+          this.grids[i][j].draw();
       }
     }
   }

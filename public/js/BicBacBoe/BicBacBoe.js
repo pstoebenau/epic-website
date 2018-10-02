@@ -68,11 +68,6 @@ function zoom(){
   board.resize(board.size*zoomSlider.value/10);
 }
 
-function position(x, y){
-  this.x = x;
-  this.y = y;
-}
-
 function updateClient(data){
   console.log(data);
   let n = 0;
